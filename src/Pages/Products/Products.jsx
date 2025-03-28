@@ -5,13 +5,13 @@ import Loader from '../../Components/Loader/Loader';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { CartContext } from '../../Context/CartContext';
-import { WishlistContext } from '../../Context/WishlistContext';
+// import { WishlistContext } from '../../Context/WishlistContext';
 
 export default function Products() {
   
   const [products, setProducts] = useState([])
   const {addToCart ,setNumOfCartItems ,setCartId} = useContext(CartContext)
-  const {addToWishlist , setCount} = useContext(WishlistContext)
+  // const {addToWishlist } = useContext(WishlistContext)
 
 
   async function getAllProducts(){
@@ -21,7 +21,7 @@ export default function Products() {
       console.log(err);
     })
   }
-   useEffect(() => {
+  useEffect(() => {
       getAllProducts();
     }, [])
 
@@ -36,23 +36,20 @@ export default function Products() {
       }
     }
 
-    async function addProductToWishlist(id){
-      let res = await addToWishlist(id);
-      if (res.status === 'success'){
-        setCount(res.count)
-        toast.success(res.message)
-      }else{
-        toast.error('failed to add to Wishlist')
-      }
-    }
-
-  
+    // async function addProductToWishlist(id){
+    //   let res = await addToWishlist(id);
+    //   if (res.status === 'success'){
+    //     toast.success(res.message)
+    //   }else{
+    //     toast.error('failed to add to Wishlist')
+    //   }
+    // }
 
   return (
   <div className='flex flex-wrap'>
         {products.length > 0 ? ( products.map((product) =>
         <div className='p-2 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6' key={product.id}>
-            <ProductItem product={product} addProduct={addProduct} addProductToWishlist={addProductToWishlist} />
+            <ProductItem product={product} addProduct={addProduct} />
         </div>
       )):(
       <div className="w-full flex justify-center items-center">

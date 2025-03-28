@@ -69,7 +69,7 @@ export default function CategorySlider() {
     <div className='my-9 mx-9'>
       <Slider {...settings}>
       {categories.map((category)=> (
-       <div key={category._id}>
+       <div className='p-4' key={category._id}>
           <img src={category.image} className='w-full h-[300px]' alt={category.name}/>
           <h5 className='m-3 font-semibold text-main'>{category.name}</h5>
        </div>

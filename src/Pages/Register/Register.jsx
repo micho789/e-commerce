@@ -35,7 +35,7 @@ export default function Register() {
   }
 
   function validateData(data){
-    // console.log(data)
+
     let errors = {};
     const nameRegex = /^[A-Z][a-zA-Z '.-]*[A-Za-z][^-]$/;
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -80,7 +80,7 @@ const formik = useFormik({
   validate: validateData,
   onSubmit:handleRegister
 })
-// console.log(formik.values);
+
 
   return (
     <>
@@ -122,7 +122,7 @@ const formik = useFormik({
       ): (
         <button type="submit" className="text-white bg-main disabled:bg-green-300 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2   focus:outline-none " disabled={!formik.isValid} >Register</button>
       )}
-      <small>Already have account <Link to={'/login'} className='text-main font-bold' >Login</Link></small>
+      <small>Already have account <Link to={'/login'} className='text-main hover:text-green-800 font-bold' >Login</Link></small>
 
       </form>
     </section>

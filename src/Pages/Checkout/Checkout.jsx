@@ -18,9 +18,9 @@ export default function Checkout() {
     }
 
     const validationSchema = Yup.object({
-        details: Yup.string().required(),
-        phone: Yup.string().required(),
-        city: Yup.string().required(),
+        details: Yup.string().required("Details is required"),
+        phone: Yup.string().required("Phone Number is required"),
+        city: Yup.string().required("City is required"),
     })
 
 

@@ -1,10 +1,20 @@
-import React from 'react'
+
+import axios from 'axios'
+import React, { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 
 export default function ForgetPassword() {
 
 
+  async function handleForgetPassword() {
+    
+    await axios.post("https://ecommerce.routemisr.com/api/v1/auth/forgotPasswords").then((response) => console.log(response)).catch((err) => console.log(err));
+  }
+
+  useEffect(() => {
+    handleForgetPassword()
+  }, [])
   
 
   return (

@@ -4,13 +4,11 @@ import { tokenContext } from "../../Context/TokenContext";
 import { FaCartShopping } from "react-icons/fa6";
 import logo from "./../../assets/freshcart-logo.svg";
 import { CartContext } from "../../Context/CartContext";
-import { WishlistContext } from "../../Context/WishlistContext";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const { token, setToken } = useContext(tokenContext);
   const { numOfCartItems } = useContext(CartContext);
-  const { count } = useContext(WishlistContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   function LogoutUser() {
@@ -63,11 +61,6 @@ export default function Navbar() {
                     className="block relative py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-main md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                   >
                     WishList
-                    {count > 0 && (
-                      <span className="absolute -top-3 -right-4 w-5 h-5 rounded-full flex justify-center items-center bg-main text-white">
-                        {count}
-                      </span>
-                    )}
                   </NavLink>
                 </li>
                 <li>
@@ -105,6 +98,14 @@ export default function Navbar() {
                         {numOfCartItems}
                       </span>
                     )}
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to={"/allorders"}
+                    className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-main md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  >
+                    Orders
                   </NavLink>
                 </li>
                 <li>
