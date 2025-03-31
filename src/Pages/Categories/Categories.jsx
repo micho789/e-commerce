@@ -2,6 +2,7 @@ import axios from 'axios';
 import styles from './Categories.module.css'
 import { useQuery } from '@tanstack/react-query';
 import Loader from '../../Components/Loader/Loader';
+import { useEffect } from 'react';
 
 export default function Categories() {
 
@@ -13,6 +14,11 @@ export default function Categories() {
     queryKey: ["categories"],
     queryFn: getCategories,
   })
+
+useEffect(() => {
+    document.title = "Categories";
+  }, []);
+
 
   return (
     <div className=' flex flex-wrap '>

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet'
 import Loader from '../../Components/Loader/Loader';
 
 export default function Brands() {
@@ -18,11 +17,13 @@ export default function Brands() {
     getAllBrands();
   }, [])
 
+  useEffect(() => {
+      document.title = "Brands";
+    }, []);
+
+
   return (
     <>
-      <Helmet>
-        <title>Brands</title>
-      </Helmet>
       <h2 className='text-4xl text-main justify-center items-center flex mb-2 font-black'>All BRANDS:</h2>
       <div className='flex flex-wrap'>
         {brands.length > 0 ? (brands.map((brand) =>

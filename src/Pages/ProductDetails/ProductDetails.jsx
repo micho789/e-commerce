@@ -51,6 +51,7 @@ export default function ProductDetails() {
     if (res.status === 'success') {
       toast.success(res.message)
       console.log(res);
+      localStorage.setItem(`liked-${id}`, true);
     } else {
       toast.error('failed to add to Wishlist')
     }

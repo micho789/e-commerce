@@ -1,10 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import axios from 'axios';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { LuLoader } from 'react-icons/lu';
 import { tokenContext } from '../../Context/TokenContext';
-import { Helmet } from 'react-helmet';
 
 export default function Login() {
   const [errorMsg, setErrorMsg] = useState(null);
@@ -60,12 +59,12 @@ export default function Login() {
     onSubmit: handleLogin
   })
 
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
 
   return (
     <>
-      <Helmet>
-        <title>Login</title>
-      </Helmet>
       <div className='flex justify-center items-center'>
         <section className=" dark:bg-gray-900 w-full md:w-3/4 lg:w-1/2 bg-gray-50 p-3 ">
           <h1 className='text-3xl font-bold my-3 text-main'>Login Now:</h1>
@@ -73,7 +72,7 @@ export default function Login() {
           <form onSubmit={formik.handleSubmit}>
             <div className='mb-5'>
               <label htmlFor="email" className="block mb-2 text-sm font-medium text-main dark:text-white">Your email</label>
-              <input onChange={formik.handleChange} type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:border-main  focus:ring-main block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" value={formik.values.email} onBlur={formik.handleBlur} />
+              <input onChange={formik.handleChange} type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:border-main  focus:ring-main block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter your email" value={formik.values.email} onBlur={formik.handleBlur} />
               {formik.touched.email && formik.errors.email && (<small className='text-red-600'>{formik.errors.email}</small>)}
             </div>
             <div className='mb-5'>

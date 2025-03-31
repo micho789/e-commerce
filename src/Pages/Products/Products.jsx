@@ -5,13 +5,11 @@ import Loader from '../../Components/Loader/Loader';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { CartContext } from '../../Context/CartContext';
-// import { WishlistContext } from '../../Context/WishlistContext';
 
 export default function Products() {
   
   const [products, setProducts] = useState([])
   const {addToCart ,setNumOfCartItems ,setCartId} = useContext(CartContext)
-  // const {addToWishlist } = useContext(WishlistContext)
 
 
   async function getAllProducts(){
@@ -36,14 +34,10 @@ export default function Products() {
       }
     }
 
-    // async function addProductToWishlist(id){
-    //   let res = await addToWishlist(id);
-    //   if (res.status === 'success'){
-    //     toast.success(res.message)
-    //   }else{
-    //     toast.error('failed to add to Wishlist')
-    //   }
-    // }
+    useEffect(() => {
+      document.title = "Products";
+    }, []);
+
 
   return (
   <div className='flex flex-wrap'>

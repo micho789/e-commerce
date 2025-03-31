@@ -1,9 +1,8 @@
 import { useFormik } from 'formik'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import * as Yup from 'yup'
 import { CartContext } from '../../Context/CartContext'
 import { useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
 import { useState } from 'react';
 
 export default function Checkout() {
@@ -49,12 +48,15 @@ export default function Checkout() {
   validationSchema,
   onSubmit:handleSubmit
 })
+
+
+useEffect(() => {
+    document.title = "Checkout";
+  }, []);
+
     
   return (
     <>
-    <Helmet>
-        <title>Checkout</title>
-      </Helmet>
 
 <div className='flex justify-center items-center  p-4'>
       <section className="dark:bg-gray-900 w-full md:w-3/4 lg:w-1/2 bg-gray-100 border  p-5 rounded-lg shadow-lg">

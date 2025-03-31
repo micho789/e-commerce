@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet'
 import { WishlistContext } from '../../Context/WishlistContext'
 import { Link } from 'react-router-dom'
 import { FaCartPlus, FaStar } from 'react-icons/fa6'
 import { CartContext } from '../../Context/CartContext'
 import toast from 'react-hot-toast'
 import { FaRegTrashAlt } from 'react-icons/fa'
-
+import Loader from '../../Components/Loader/Loader';
 
 
 export default function WishList() {
@@ -14,11 +13,14 @@ export default function WishList() {
     const {getLoggedUserWishlist , removeWishlistItem , setCount} = useContext(WishlistContext)
     const {addToCart , setCartId , setNumOfCartItems} = useContext(CartContext)
     const [wishListData, setWishListData ] = useState(0)
+    const [loading, setLoading] = useState(true);
+    
 
     async function getData(){
       let data =  await getLoggedUserWishlist()
       setWishListData(data.data)
       console.log(data.data)
+      setLoading(false);
     }
   
     async function deleteProduct(id){
@@ -42,13 +44,17 @@ export default function WishList() {
         getData()
       }, [])
 
+      useEffect(() => {
+        document.title = "Wishlist";
+      }, []);
+
   return (
     <>
-      <Helmet>
-        <title>Wishlist</title>
-      </Helmet>
       <div className="container mx-auto px-4 py-6">
-        {wishListData.length > 0 ? (
+      {loading ? (
+        <Loader />
+      ) :
+        wishListData.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {wishListData.map((item) => (
               <div
@@ -98,8 +104,8 @@ export default function WishList() {
             ))}
           </div>
         ) : (
-          <p className="text-main text-2xl font-bold flex justify-center items-center h-32">
-            Your wishlist is empty.
+          <p className="text-main text-lg sm:text-xl md:text-2xl font-bold flex justify-center items-center h-24 sm:h-28 md:h-32 text-center px-4">
+            You haven't added any favorite products yet. Start exploring and add your favorites!
           </p>
         )}
       </div>

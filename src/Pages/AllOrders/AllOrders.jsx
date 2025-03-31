@@ -5,19 +5,20 @@ import { useEffect } from 'react';
 import { tokenContext } from '../../Context/TokenContext';
 import { FaLocationDot, FaPhone } from 'react-icons/fa6';
 import Loader from '../../Components/Loader/Loader';
-import { Helmet } from 'react-helmet';
 import { MdOutlineAttachMoney, MdPayment } from 'react-icons/md';
 import Slider from 'react-slick';
 
 export default function AllOrders() {
   const {userId} =   useContext(tokenContext)
   const [ordersData, setOrdersData ] = useState(0)
+  const [loading, setLoading] = useState(true);
   console.log(userId);
   
- async function getUserOrders(){
-   await axios.get(`https://ecommerce.routemisr.com/api/v1/orders/user/${userId}`).then((response)=>{
+  async function getUserOrders(){
+    await axios.get(`https://ecommerce.routemisr.com/api/v1/orders/user/${userId}`).then((response)=>{
     console.log(response.data);
     setOrdersData(response.data);
+    setLoading(false)
   }).catch((err)=>{
     console.log(err);
   })
@@ -26,6 +27,12 @@ export default function AllOrders() {
 useEffect(() => {
   getUserOrders()
 }, [])
+
+
+useEffect(() => {
+      document.title = "All Orders";
+    }, []);
+
 
 const settings = {
   dots: true,
@@ -40,10 +47,11 @@ const settings = {
 
   return (
     <>
-      <Helmet>
-        <title>All Orders</title>
-      </Helmet>
-      {ordersData.length > 0 ? (
+       {loading ? (
+        <div className="flex justify-center items-center h-64">
+          <Loader />
+        </div>
+      ) :ordersData.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {ordersData.map((order) => (
             <div
@@ -97,9 +105,12 @@ const settings = {
           ))}
         </div>
       ) : (
-        <Loader />
+          <p className="text-main text-lg sm:text-xl md:text-2xl font-bold flex justify-center items-center h-24 sm:h-28 md:h-32 text-center px-4">
+            No orders yet. Start shopping now!
+          </p>
       )}
     </>
+
 
   )
 }
