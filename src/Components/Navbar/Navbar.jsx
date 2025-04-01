@@ -94,7 +94,7 @@ export default function Navbar() {
                   >
                     <FaCartShopping className="text-xl" />
                     {numOfCartItems > 0 && (
-                      <span className="absolute -top-3 -right-4 w-5 h-5 rounded-full flex justify-center items-center bg-main text-white">
+                      <span className="absolute -top-2 left-6  md:-top-3 md:-right-4 w-5 h-5 rounded-full flex justify-center items-center bg-main text-white">
                         {numOfCartItems}
                       </span>
                     )}

@@ -29,7 +29,7 @@ export default function Checkout() {
         let response = await onlinePayment({shippingAddress: data})
         if(response.status === 'success'){
             window.location.href=response.session.url
-        }
+          }
       }else{
         let response = await cashOnDelivery({shippingAddress: data});
         if (response.data.status){

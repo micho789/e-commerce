@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
 
 
-export default function ForgetPassword(){
+export default function ForgetPassword() {
 
   const [email, setEmail] = useState("");
   const [resetCode, setResetCode] = useState("");
@@ -13,11 +14,15 @@ export default function ForgetPassword(){
   const [successMsg, setSuccessMsg] = useState("");
   const navigate = useNavigate();
 
+  const initialValues = {
+    password: "",
+  }
 
-  async function handleForgotPassword(){
+
+  async function handleForgotPassword() {
     setErrorMsg("");
     setSuccessMsg("");
-  
+
     axios
       .post("https://ecommerce.routemisr.com/api/v1/auth/forgotPasswords", { email })
       .then((response) => {
@@ -28,12 +33,12 @@ export default function ForgetPassword(){
         setErrorMsg("Something went wrong.");
       });
   };
-  
 
-  async function handleVerifyCode(){
+
+  async function handleVerifyCode() {
     setErrorMsg("");
     setSuccessMsg("");
-  
+
     axios
       .post("https://ecommerce.routemisr.com/api/v1/auth/verifyResetCode", { resetCode })
       .then((res) => {
@@ -44,8 +49,8 @@ export default function ForgetPassword(){
         setErrorMsg("Invalid reset code.");
       });
   };
-  
-  async function handleResetPassword(){
+
+  async function handleResetPassword() {
     setErrorMsg("");
     setSuccessMsg("");
 
@@ -57,32 +62,53 @@ export default function ForgetPassword(){
       })
       .catch((err) => {
         setErrorMsg("Failed to reset password.");
-        });
+      });
   };
-  
+
+
+
+  function validateData(data) {
+    let errors = {};
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/
+
+    if (data.password === "") {
+      errors.password = "Password must contain at least 8 characters, one uppercase and lowercase letter (A,z) and at least one numeric character (0-9).";
+    } else if (!passwordRegex.test(data.password)) {
+      errors.password = "Password must contain at least 8 characters, one uppercase and lowercase letter (A,z) and at least one numeric character (0-9).";
+    }
+
+    return errors
+  }
+
+  const formik = useFormik({
+    initialValues,
+    validate: validateData,
+    onSubmit: handleResetPassword
+  })
+
 
 
   return (
     <div className='flex justify-center items-center'>
       <section className=" dark:bg-gray-900 w-full md:w-3/4 lg:w-1/2 bg-gray-50 p-3 ">
-      {step === 1 && (
-        <>
-          <h1 className='text-3xl font-bold my-3 text-main'>Forget Password:</h1>
-          {errorMsg && (<div className='bg-red-400 rounded-md my-2 p-3 text-center text-white'>{errorMsg}</div>)}
-          {successMsg && (<div className='bg-main rounded-md my-2 p-3 text-center text-white'>{successMsg}</div>)}
+        {step === 1 && (
+          <>
+            <h1 className='text-3xl font-bold my-3 text-main'>Forget Password:</h1>
+            {errorMsg && (<div className='bg-red-400 rounded-md my-2 p-3 text-center text-white'>{errorMsg}</div>)}
+            {successMsg && (<div className='bg-main rounded-md my-2 p-3 text-center text-white'>{successMsg}</div>)}
             <div className='mb-5'>
               <label htmlFor="email" className="block mb-2 text-sm font-medium text-main dark:text-white">Your email</label>
               <input type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:border-main  focus:ring-main block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter your email" />
             </div>
             <div className="flex justify-between">
-            <button className="text-white bg-main hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" onClick={() => navigate("/login")}>Cancel</button>
-            <button className="text-white bg-main hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" onClick={handleForgotPassword}>Send Reset Code</button>
+              <button className="text-white bg-main hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" onClick={() => navigate("/login")}>Cancel</button>
+              <button className="text-white bg-main hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" onClick={handleForgotPassword}>Send Reset Code</button>
             </div>
-        </>
-      )}
-      {step === 2 && (
-        <>
-          <h1 className='text-3xl font-bold my-3 text-main'>Verify Code:</h1>
+          </>
+        )}
+        {step === 2 && (
+          <>
+            <h1 className='text-3xl font-bold my-3 text-main'>Verify Code:</h1>
             {errorMsg && (<div className='bg-red-400 rounded-md my-2 p-3 text-center text-white'>{errorMsg}</div>)}
             {successMsg && (<div className='bg-main rounded-md my-2 p-3 text-center text-white'>{successMsg}</div>)}
             <div className='mb-5'>
@@ -90,37 +116,37 @@ export default function ForgetPassword(){
               <input type="text" name="text" id="text" value={resetCode} onChange={(e) => setResetCode(e.target.value)} required className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:border-main  focus:ring-main block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter reset code" />
             </div>
             <div className="flex justify-end">
-            <button className="text-white bg-main hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" onClick={handleVerifyCode}>Verify</button>
+              <button className="text-white bg-main hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" onClick={handleVerifyCode}>Verify</button>
             </div>
-        </>
-      )}
-      {step === 3 && (
-        <>
-          <h1 className='text-3xl font-bold my-3 text-main'>Create New Password:</h1>
+          </>
+        )}
+        {step === 3 && (
+          <>
+            <h1 className='text-3xl font-bold my-3 text-main'>Create New Password:</h1>
             {errorMsg && (<div className='bg-red-400 rounded-md my-2 p-3 text-center text-white'>{errorMsg}</div>)}
             {successMsg && (<div className='bg-main rounded-md my-2 p-3 text-center text-white'>{successMsg}</div>)}
             <div className='mb-5'>
-              <label htmlFor="password" className="block mb-2 text-sm font-medium text-main dark:text-white">Your Password</label>
-              <input type="password" name="password" id="password" onChange={(e) => setNewPassword(e.target.value)} required className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:border-main  focus:ring-main block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter new password" />
+              <label htmlFor="password" className="block mb-2 text-sm font-medium text-main dark:text-white">Your password</label>
+              <input onChange={(e) => { formik.handleChange(e); setNewPassword(e.target.value); }} required type="password" name="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:border-main  focus:ring-main  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter Your Password" value={formik.values.password} onBlur={formik.handleBlur} />
+              {formik.touched.password && formik.errors.password && (<small className='text-red-600'>{formik.errors.password}</small>)}
             </div>
             <div className="flex justify-end">
-            <button className="text-white bg-main hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" onClick={handleResetPassword}>Create</button>
+              <button className="text-white mt-1 bg-main disabled:bg-green-300 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" disabled={!formik.isValid} onClick={handleResetPassword}>Create</button>
             </div>
-        </>
-      )}
-      {step === 4 &&(
-        <p className="text-green-400 font-semibold text-center text-md lg:text-2xl sm:text-lg md:text-lg px-4">
-        Password successfully changed. You can now{" "}
-        <Link
-          to="/login"
-          className="text-green-400 font-bold underline hover:text-main"
-        >
-          login.
-        </Link>
-      </p>
+          </>
+        )}
+        {step === 4 && (
+          <p className="text-green-400 font-semibold text-center text-md lg:text-2xl sm:text-lg md:text-lg px-4">
+            Password successfully changed. You can now{" "}
+            <Link
+              to="/login"
+              className="text-green-400 font-bold underline hover:text-main"
+            >
+              login.
+            </Link>
+          </p>
         )}
       </section>
     </div>
   );
 };
-      

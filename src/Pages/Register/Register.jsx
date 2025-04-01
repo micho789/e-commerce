@@ -54,9 +54,9 @@ export default function Register() {
     }
 
     if(data.password === ""){
-      errors.password = "Password is required";
+      errors.password = "Password must contain at least 8 characters, one uppercase and lowercase letter (A,z) and at least one numeric character (0-9).";
     }else if(!passwordRegex.test(data.password)){
-      errors.password = "Password is not valid";
+      errors.password = "Password must contain at least 8 characters, one uppercase and lowercase letter (A,z) and at least one numeric character (0-9).";
     }
 
     if(data.rePassword === ""){

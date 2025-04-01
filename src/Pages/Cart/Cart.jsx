@@ -78,7 +78,7 @@ export default function Cart() {
                   <td className="p-2 text-center">
                     <img src={product.product?.imageCover} className="w-12 md:w-24 max-w-full max-h-full" alt={product.product?.title} />
                   </td>
-                  <td className="px-4 py-4 font-semibold text-gray-900 dark:text-white">{product.product?.title}</td>
+                  <td className="px-4 py-4 font-semibold text-gray-900 dark:text-white">{product.product?.title.split(' ').slice(0, 3).join(' ')}</td>
                   <td className="px-4 py-4">
                     <div className="flex items-center justify-center">
                       <button disabled={product.count === 1} onClick={() => updateProduct(product.product.id, product.count - 1)}

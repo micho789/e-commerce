@@ -7,16 +7,17 @@ import { FaLocationDot, FaPhone } from 'react-icons/fa6';
 import Loader from '../../Components/Loader/Loader';
 import { MdOutlineAttachMoney, MdPayment } from 'react-icons/md';
 import Slider from 'react-slick';
+import { useNavigate } from 'react-router-dom';
 
 export default function AllOrders() {
   const {userId} =   useContext(tokenContext)
   const [ordersData, setOrdersData ] = useState(0)
   const [loading, setLoading] = useState(true);
-  console.log(userId);
+  const navigate = useNavigate();
+
   
   async function getUserOrders(){
     await axios.get(`https://ecommerce.routemisr.com/api/v1/orders/user/${userId}`).then((response)=>{
-    console.log(response.data);
     setOrdersData(response.data);
     setLoading(false)
   }).catch((err)=>{
@@ -24,9 +25,14 @@ export default function AllOrders() {
   })
   }
 
+
 useEffect(() => {
-  getUserOrders()
-}, [])
+  if (userId) {
+    getUserOrders();
+  } else {
+    navigate('/');
+  }
+}, [userId]);
 
 
 useEffect(() => {
@@ -73,7 +79,7 @@ const settings = {
                   </Slider>
                 ) : (
                   <img
-                    src={order.cartItems[0].product.imageCover}
+                    src={order.cartItems[0]?.product.imageCover}
                     alt="Product"
                     className="w-full h-48 object-cover rounded-xl"
                   />

@@ -22,26 +22,45 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import Checkout from "./Pages/Checkout/Checkout"
 import AllOrders from "./Pages/AllOrders/AllOrders"
 import WishlistContextProvider from "./Context/WishlistContext"
+import icon from "./assets/icon.png";
+import { useEffect } from "react"
 
 export default function App() {
 
- const routes =  createBrowserRouter([{
-    path:"",element:<MainLayout/>,
-    children:[{index: true, element:<ProtectedRoutes> <Home/></ProtectedRoutes>},
-      {path: "products" , element:<ProtectedRoutes> <Products/></ProtectedRoutes>},
-      {path: "login" , element: <Login/>},
-      {path: "register" , element: <Register/>},
-      {path: "forgetPassword" , element: <ForgetPassword/>},
-      {path: "*" , element: <NotFound/>},
-      {path: "productDetails/:productId" , element:<ProtectedRoutes><ProductDetails/></ProtectedRoutes> },
-      {path: "categories" , element:<ProtectedRoutes> <Categories/></ProtectedRoutes>},
-      {path: "cart" , element:<ProtectedRoutes> <Cart/></ProtectedRoutes>},
-      {path: "brands" , element:<ProtectedRoutes><Brands/></ProtectedRoutes> },
-      {path: "wishList" , element:<ProtectedRoutes> <WishList/></ProtectedRoutes>},
-      {path: "checkout" , element:<ProtectedRoutes> <Checkout/></ProtectedRoutes>},
-      {path: "allorders" , element:<ProtectedRoutes> <AllOrders/></ProtectedRoutes>},
+
+  function Favicon(){
+    const link = document.querySelector("link[rel~='icon']");
+    if (link) {
+        link.href = icon;
+    }
+  }
+
+  useEffect(() => {
+      Favicon()
+  }, []);
+
+ const routes =  createBrowserRouter(
+  [{
+    path: "/", 
+    element: <MainLayout />,
+    children: [
+      { index: true, element: <ProtectedRoutes> <Home /> </ProtectedRoutes> },
+      { path: "products", element: <ProtectedRoutes> <Products /> </ProtectedRoutes> },
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
+      { path: "forgetPassword", element: <ForgetPassword /> },
+      { path: "productDetails/:productId", element: <ProtectedRoutes> <ProductDetails /> </ProtectedRoutes> },
+      { path: "categories", element: <ProtectedRoutes> <Categories /> </ProtectedRoutes> },
+      { path: "cart", element: <ProtectedRoutes> <Cart /> </ProtectedRoutes> },
+      { path: "brands", element: <ProtectedRoutes> <Brands /> </ProtectedRoutes> },
+      { path: "wishList", element: <ProtectedRoutes> <WishList /> </ProtectedRoutes> },
+      { path: "checkout", element: <ProtectedRoutes> <Checkout /> </ProtectedRoutes> },
+      { path: "allorders", element: <ProtectedRoutes> <AllOrders /> </ProtectedRoutes> },
+      { path: "*", element: <NotFound /> }
     ]
-  }])
+  }],
+  { basename: "/e-commerce" }
+)
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
